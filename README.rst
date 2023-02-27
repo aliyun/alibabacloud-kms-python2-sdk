@@ -25,7 +25,7 @@ Requirements
 -  Python 2.7.15 or later
 
 Install
-------
+-------
 
 ::
 
