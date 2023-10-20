@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 import base64
 
-from Tea.exceptions import TeaException
 from openapi_util import models as dkms_util_models
 from requests import codes
-from sdk.models import DecryptRequest
+from sdk.models import AdvanceDecryptRequest
 
 from alibabacloud_kms_kms20160120.handlers.kms_transfer_handler import get_missing_parameter_client_exception, \
     KmsTransferHandler
 from alibabacloud_kms_kms20160120.utils import consts, encryption_context_utils
+from alibabacloud_kms_kms20160120.utils.consts import *
+
+import struct
 
 
-class DecryptTransferHandler(KmsTransferHandler):
+class AdvanceDecryptTransferHandler(KmsTransferHandler):
 
     def __init__(self, client, action, kms_config):
         self.client = client
@@ -31,16 +33,15 @@ class DecryptTransferHandler(KmsTransferHandler):
         if not request.query.get('CiphertextBlob'):
             raise get_missing_parameter_client_exception('CiphertextBlob')
         ciphertext_blob_bytes = base64.b64decode(request.query.get('CiphertextBlob'))
-        ekt_id_bytes = ciphertext_blob_bytes[0:consts.EKT_ID_LENGTH]
-        iv_bytes = ciphertext_blob_bytes[consts.EKT_ID_LENGTH:consts.EKT_ID_LENGTH + consts.GCM_IV_LENGTH]
-        ciphertext_bytes = ciphertext_blob_bytes[consts.EKT_ID_LENGTH + consts.GCM_IV_LENGTH:]
+        iv_bytes = ciphertext_blob_bytes[consts.EKT_ID_LENGTH:EKT_ID_LENGTH + GCM_IV_LENGTH]
+        cipher_ver_and_padding_mode = CIPHER_VER << 4 | 0
+        ciphertext_bytes = MAGIC_NUM + struct.pack("B",
+                                                   cipher_ver_and_padding_mode) + ALG_AES_GCM + ciphertext_blob_bytes
         if runtime_options is not None and runtime_options.encoding is not None:
             encoding = runtime_options.encoding
         else:
             encoding = self.encoding
-        ekt_id = ekt_id_bytes.decode(encoding)
-        kms_request = DecryptRequest()
-        kms_request.request_headers = {consts.MIGRATION_KEY_VERSION_ID_KEY: ekt_id}
+        kms_request = AdvanceDecryptRequest()
         kms_request.iv = iv_bytes
         kms_request.ciphertext_blob = ciphertext_bytes
         if request.query.get('EncryptionContext'):
@@ -51,15 +52,9 @@ class DecryptTransferHandler(KmsTransferHandler):
         dkms_runtime_options = dkms_util_models.RuntimeOptions().from_map(runtime_options.to_map())
         dkms_runtime_options.verify = runtime_options.ca
         dkms_runtime_options.response_headers = self.response_headers
-        return self.client.decrypt_with_options(request, dkms_runtime_options)
+        return self.client.advance_decrypt_with_options(request, dkms_runtime_options)
 
     def transfer_response(self, response, runtime_options):
-        response_headers = response.response_headers
-        if not response_headers:
-            raise TeaException({
-                'message': 'Can not found response headers'
-            })
-        key_version_id = response_headers.get(consts.MIGRATION_KEY_VERSION_ID_KEY)
         if runtime_options is not None and runtime_options.encoding is not None:
             encoding = runtime_options.encoding
         else:
@@ -68,7 +63,7 @@ class DecryptTransferHandler(KmsTransferHandler):
             'KeyId': response.key_id,
             'Plaintext': response.plaintext.decode(encoding),
             'RequestId': response.request_id,
-            'KeyVersionId': key_version_id
+            'KeyVersionId': response.key_version_id
         }
         return {
             'body': body,

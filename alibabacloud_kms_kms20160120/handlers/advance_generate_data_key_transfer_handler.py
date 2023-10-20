@@ -4,14 +4,15 @@ import base64
 from Tea.exceptions import TeaException
 from openapi_util import models as dkms_util_models
 from requests import codes
-from sdk.models import GenerateDataKeyRequest, EncryptRequest
+from sdk.models import AdvanceEncryptRequest, AdvanceGenerateDataKeyRequest
 
 from alibabacloud_kms_kms20160120.handlers.kms_transfer_handler import KmsTransferHandler, INVALID_PARAM_ERROR_CODE, \
     INVALID_PARAMETER_KEY_SPEC_ERROR_MESSAGE
 from alibabacloud_kms_kms20160120.utils import consts, encryption_context_utils
+from alibabacloud_kms_kms20160120.utils.consts import *
 
 
-class GenerateDataKeyTransferHandler(KmsTransferHandler):
+class AdvanceGenerateDataKeyTransferHandler(KmsTransferHandler):
 
     def __init__(self, client, action, kms_config):
         self.client = client
@@ -28,7 +29,7 @@ class GenerateDataKeyTransferHandler(KmsTransferHandler):
         return self.action
 
     def build_kms_request(self, request, runtime_options):
-        kms_request = GenerateDataKeyRequest()
+        kms_request = AdvanceGenerateDataKeyRequest()
         kms_request.key_id = request.query.get('KeyId')
         key_spec = request.query.get('KeySpec')
         number_of_bytes = request.query.get('NumberOfBytes')
@@ -55,41 +56,34 @@ class GenerateDataKeyTransferHandler(KmsTransferHandler):
         dkms_runtime_options = dkms_util_models.RuntimeOptions().from_map(runtime_options.to_map())
         dkms_runtime_options.verify = runtime_options.ca
         dkms_runtime_options.response_headers = self.response_headers
-        generate_data_key_response = self.client.generate_data_key_with_options(request, dkms_runtime_options)
+        advance_generate_data_key_response = self.client.advance_generate_data_key_with_options(request,
+                                                                                                dkms_runtime_options)
 
-        encrypt_request = EncryptRequest()
-        encrypt_request.key_id = request.key_id
-        encrypt_request.plaintext = base64.b64encode(generate_data_key_response.plaintext)
-        encrypt_request.aad = request.aad
-        encrypt_response = self.client.encrypt_with_options(encrypt_request, dkms_runtime_options)
+        advance_encrypt_request = AdvanceEncryptRequest()
+        advance_encrypt_request.key_id = request.key_id
+        advance_encrypt_request.plaintext = base64.b64encode(advance_generate_data_key_response.plaintext)
+        advance_encrypt_request.aad = request.aad
+        encrypt_response = self.client.advance_encrypt_with_options(advance_encrypt_request, dkms_runtime_options)
 
-        generate_data_key_response.response_headers = encrypt_response.response_headers
-        generate_data_key_response.ciphertext_blob = encrypt_response.ciphertext_blob
-        generate_data_key_response.iv = encrypt_response.iv
-        return generate_data_key_response
+        advance_generate_data_key_response.response_headers = encrypt_response.response_headers
+        advance_generate_data_key_response.ciphertext_blob = encrypt_response.ciphertext_blob
+        advance_generate_data_key_response.iv = encrypt_response.iv
+        return advance_generate_data_key_response
 
     def transfer_response(self, response, runtime_options):
         response_headers = response.response_headers
-        if not response_headers:
-            raise TeaException({
-                'message': 'Can not found response headers'
-            })
-        key_version_id = response_headers.get(consts.MIGRATION_KEY_VERSION_ID_KEY)
-        if not key_version_id:
-            raise TeaException({
-                'message': "Can not found response headers parameter[%s]" % consts.MIGRATION_KEY_VERSION_ID_KEY
-            })
         if runtime_options is not None and runtime_options.encoding is not None:
             encoding = runtime_options.encoding
         else:
             encoding = self.encoding
-        ciphertext_blob = key_version_id.encode(encoding) + response.iv + response.ciphertext_blob
+        start = MAGIC_NUM_LENGTH + CIPHER_VER_AND_PADDING_MODE_LENGTH + ALGORITHM_LENGTH
+        ciphertext_blob = response.ciphertext_blob[start: len(response.ciphertext_blob)]
         body = {
             'KeyId': response.key_id,
             'CiphertextBlob': base64.b64encode(ciphertext_blob).decode(encoding),
             'Plaintext': base64.b64encode(response.plaintext).decode(encoding),
             'RequestId': response.request_id,
-            'KeyVersionId': key_version_id
+            'KeyVersionId': response.key_version_id
         }
         return {
             'body': body,

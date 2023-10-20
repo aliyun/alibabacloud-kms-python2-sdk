@@ -1,267 +1,363 @@
 Alibaba Cloud KMS SDK for Python2
-==================================
+=================================
 
-|image0|
+.. figure:: https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg
+   :alt: image0
 
-Alibaba Cloud KMS SDK for Python2 can help Python developers to use the KMS.
+   image0
+
+Alibaba Cloud KMS SDK for Python2 can help Python developers to use the
+KMS.
 
 *Read this in other
 languages:*\ `English <README.rst>`__\ *,*\ `简体中文 <README.zh-cn.rst>`__
 
--  `Alibaba Cloud KMS Homepage <https://www.alibabacloud.com/help/zh/doc-detail/311016.htm>`__
+-  `Alibaba Cloud KMS
+   Homepage <https://www.alibabacloud.com/help/zh/doc-detail/311016.htm>`__
 -  `Sample Code </example>`__
 -  `Issues <https://github.com/aliyun/alibabacloud-kms-kms20160120-python2-sdk/issues>`__
 -  `Release <https://github.com/aliyun/alibabacloud-kms-kms20160120-python2-sdk/releases>`__
 
-License
---------
-
-`Apache License
-2.0 <https://www.apache.org/licenses/LICENSE-2.0.html>`__
-
 Requirements
--------------
+------------
 
 -  Python 2.7.15 or later
 
 Install
---------
+-------
 
 ::
 
    pip install alibabacloud-kms-python2-sdk
 
+Introduction to KMS Client
 
-Client Mechanism
------------------
-Alibaba Cloud KMS SDK for Python2 transfers the following methods of request to KMS instance vpc gateway by default.
++--------------------------+---------------------+---------------------+
+| KMS client classes       | Introduction        | Usage scenarios     |
++==========================+=====================+=====================+
+| alibabacloud_kms_k       | KMS resource        | 1. Scenarios where  |
+| ms20160120.client.Client | management and key  | key operations are  |
+|                          | operations for KMS  | performed only      |
+|                          | instance gateways   | through VPC         |
+|                          | are supported       | gateways. 2. KMS    |
+|                          |                     | resource management |
+|                          |                     | scenarios that only |
+|                          |                     | use public          |
+|                          |                     | gateways. 3.        |
+|                          |                     | Scenarios where you |
+|                          |                     | want to perform key |
+|                          |                     | operations through  |
+|                          |                     | VPC gateways and    |
+|                          |                     | manage KMS          |
+|                          |                     | resources through   |
+|                          |                     | public gateways.    |
++--------------------------+---------------------+---------------------+
+| al                       | Users can migrate   | Users who use       |
+| ibabacloud_kms_kms201601 | from KMS 1.0 key    | Alibaba Cloud SDK   |
+| 20.client.TransferClient | operations to KMS   | to access KMS 1.0   |
+|                          | 3.0 key operations  | key operations need |
+|                          |                     | to migrate to KMS   |
+|                          |                     | 3.0                 |
++--------------------------+---------------------+---------------------+
 
--  Encrypt
--  Decrypt
--  GenerateDataKey
--  GenerateDataKeyWithoutPlaintext
--  GetPublicKey
--  AsymmetricEncrypt
--  AsymmetricDecrypt
--  AsymmetricSign
--  AsymmetricVerify
--  GetSecretValue
+Sample code
+-----------
 
-You could use Alibaba Cloud KMS SDK for Python2 to transfers the given methods related to the vpc gateway of request to the KMS shared gateway with the given parameter.
+1. Scenarios where key operations are performed only through VPC gateways.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- Refer to the following code to forward calls from all of these interfaces to the KMS shared gateway. Take calling the GetSecretValue interface as an example.
+Refer to the following sample code to call the KMS Encrypt API. For more API examples, see\ `operation samples <./example/operation>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
+   # -*- coding: utf-8 -*-
+   # This file is auto-generated, don't edit it. Thanks.
+   from __future__ import unicode_literals
+
+   import sys
+
+
+   from openapi import models as dedicated_kms_openapi_models
+   from alibabacloud_kms_kms20160120.client import Client as KmsSdkClient
+   from sdk import models as dedicated_kms_sdk_models
+   from alibabacloud_tea_util.client import Client as UtilClient
+
+   import os
+
+   class Encrypt(object):
+       def __init__(self):
+           pass
+
+       @staticmethod
+       def create_kms_instance_config(client_key_file, password, endpoint, ca_file_path):
+           config = dedicated_kms_openapi_models.Config(
+               client_key_file=client_key_file,
+               password=password,
+               endpoint=endpoint,
+               ca_file_path=ca_file_path
+           )
+           return config
+
+       @staticmethod
+       def create_client(kms_instance_config):
+           return KmsSdkClient(kms_instance_config=kms_instance_config)
+
+       @staticmethod
+       def encrypt(client, padding_mode, aad, key_id, plaintext, iv, algorithm):
+           request = dedicated_kms_sdk_models.EncryptRequest(
+               padding_mode=padding_mode,
+               aad=aad,
+               key_id=key_id,
+               plaintext=plaintext,
+               iv=iv,
+               algorithm=algorithm
+           )
+           return client.encrypt(request)
+
+       @staticmethod
+       def main(args):
+           kms_instance_config = Encrypt.create_kms_instance_config(os.getenv('your client key file path env'), os.getenv('your client key password env'), 'your kms instance endpoint', 'your ca file path')
+           client = Encrypt.create_client(kms_instance_config)
+           padding_mode = 'your paddingMode'
+           aad = UtilClient.to_bytes('your aad')
+           key_id = 'your keyId'
+           plaintext = UtilClient.to_bytes('your plaintext')
+           iv = UtilClient.to_bytes('your iv')
+           algorithm = 'your algorithm'
+           response = Encrypt.encrypt(client, padding_mode, aad, key_id, plaintext, iv, algorithm)
+           print response
+
+
+   if __name__ == '__main__':
+       Encrypt.main(sys.argv[1:])
+
+2. KMS resources are managed only through public gateways.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Refer to the following sample code to call the KMS CreateKey API. For more API examples, see\ `manage samples <./example/manage>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+   # This file is auto-generated, don't edit it. Thanks.
+   from __future__ import unicode_literals
+
+   import sys
+
+
+   from alibabacloud_tea_openapi import models as open_api_models
+   from alibabacloud_kms_kms20160120.client import Client as KmsSdkClient
+   from alibabacloud_kms20160120 import models as kms_20160120_models
+
+   import os
+
+   class CreateKey(object):
+       def __init__(self):
+           pass
+
+       @staticmethod
+       def create_open_api_config(access_key_id, access_key_secret, region_id):
+           config = open_api_models.Config(
+               access_key_id=access_key_id,
+               access_key_secret=access_key_secret,
+               region_id=region_id
+           )
+           return config
+
+       @staticmethod
+       def create_client(open_api_config):
+           return KmsSdkClient(open_api_config=open_api_config)
+
+       @staticmethod
+       def create_key(client, enable_automatic_rotation, rotation_interval, key_usage, origin, description, dkmsinstance_id, protection_level, key_spec):
+           request = kms_20160120_models.CreateKeyRequest(
+               enable_automatic_rotation=enable_automatic_rotation,
+               rotation_interval=rotation_interval,
+               key_usage=key_usage,
+               origin=origin,
+               description=description,
+               dkmsinstance_id=dkmsinstance_id,
+               protection_level=protection_level,
+               key_spec=key_spec
+           )
+           return client.create_key(request)
+
+       @staticmethod
+       def main(args):
+           #Make sure that the environment in which the code runs has environment variables ALIBABA_CLOUD_ACCESS_KEY_ID and ALIBABA_CLOUD_ACCESS_KEY_SECRET set.
+           #Project code leakage may cause AccessKey to be leaked and threaten the security of all resources under the account. The following code example uses an environment variable to obtain the AccessKey for reference only, it is recommended to use the more secure STS mode, for more authentication access methods, see https://help.aliyun.com/document_detail/378657.html
+           open_api_config = CreateKey.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
+           client = CreateKey.create_client(open_api_config)
+           enable_automatic_rotation = False
+           rotation_interval = 'your rotationInterval'
+           key_usage = 'your keyUsage'
+           origin = 'your origin'
+           description = 'your description'
+           d_kmsinstance_id = 'your dKMSInstanceId'
+           protection_level = 'your protectionLevel'
+           key_spec = 'your keySpec'
+           response = CreateKey.create_key(client, enable_automatic_rotation, rotation_interval, key_usage, origin, description, d_kmsinstance_id, protection_level, key_spec)
+           print response
+
+
+   if __name__ == '__main__':
+       CreateKey.main(sys.argv[1:])
+
+3. You must not only perform key operations through a VPC gateway, but also manage KMS resources through a public gateway.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Refer to the following sample code to call the KMS CreateKey API and the Encrypt API. For more API examples, see `operation samples <./example/operation>`__ 和 `manage samples <./example/manage>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+   from __future__ import unicode_literals
+
+   import sys
+
+   from alibabacloud_tea_openapi import models as open_api_models
+   from alibabacloud_kms_kms20160120.client import Client as KmsSdkClient
+   from alibabacloud_kms20160120 import models as kms_20160120_models
+   from alibabacloud_tea_util.client import Client as UtilClient
+   from openapi import models as dedicated_kms_openapi_models
+   from sdk import models as dedicated_kms_sdk_models
+   import os
+
+
+   class Sample(object):
+       def __init__(self):
+           pass
+
+       @staticmethod
+       def create_open_api_config(access_key_id, access_key_secret, region_id):
+           config = open_api_models.Config(
+               access_key_id=access_key_id,
+               access_key_secret=access_key_secret,
+               region_id=region_id
+           )
+           return config
+
+       @staticmethod
+       def create_kms_instance_config(client_key_file, password, endpoint, ca_file_path):
+           config = dedicated_kms_openapi_models.Config(
+               client_key_file=client_key_file,
+               password=password,
+               endpoint=endpoint,
+               ca_file_path=ca_file_path
+           )
+           return config
+
+       @staticmethod
+       def create_client(kms_instance_config, open_api_config):
+           return KmsSdkClient(kms_instance_config=kms_instance_config, open_api_config=open_api_config)
+
+       @staticmethod
+       def generate_data_key(client, aad, key_id, number_of_bytes, algorithm):
+           request = dedicated_kms_sdk_models.GenerateDataKeyRequest(
+               aad=aad,
+               key_id=key_id,
+               number_of_bytes=number_of_bytes,
+               algorithm=algorithm
+           )
+           return client.generate_data_key(request)
+
+       @staticmethod
+       def create_key(client, enable_automatic_rotation, rotation_interval, key_usage, origin, description,
+                      dkmsinstance_id, protection_level, key_spec):
+           request = kms_20160120_models.CreateKeyRequest(
+               enable_automatic_rotation=enable_automatic_rotation,
+               rotation_interval=rotation_interval,
+               key_usage=key_usage,
+               origin=origin,
+               description=description,
+               dkmsinstance_id=dkmsinstance_id,
+               protection_level=protection_level,
+               key_spec=key_spec
+           )
+           return client.create_key(request)
+
+       @staticmethod
+       def main(args):
+           #Make sure that the environment in which the code runs has environment variables ALIBABA_CLOUD_ACCESS_KEY_ID and ALIBABA_CLOUD_ACCESS_KEY_SECRET set.
+           #Project code leakage may cause AccessKey to be leaked and threaten the security of all resources under the account. The following code example uses an environment variable to obtain the AccessKey for reference only, it is recommended to use the more secure STS mode, for more authentication access methods, see https://help.aliyun.com/document_detail/378657.html
+           open_api_config = Sample.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'),
+                                                           os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
+           kms_instance_config = Sample.create_kms_instance_config(os.getenv('your client key file path env'),
+                                                                   os.getenv('your client key password env'),
+                                                                   'your kms instance endpoint', 'your ca file path')
+           client = Sample.create_client(kms_instance_config=kms_instance_config, open_api_config=open_api_config)
+
+           aad = UtilClient.to_bytes('your aad')
+           key_id = 'your keyId'
+           number_of_bytes = int(UtilClient.assert_as_string('your numberOfBytes'))
+           algorithm = 'your algorithm'
+           response = Sample.generate_data_key(client, aad, key_id, number_of_bytes, algorithm)
+           print response
+
+           enable_automatic_rotation = False
+           rotation_interval = 'your rotationInterval'
+           key_usage = 'your keyUsage'
+           origin = 'your origin'
+           description = 'your description'
+           d_kmsinstance_id = 'your dKMSInstanceId'
+           protection_level = 'your protectionLevel'
+           key_spec = 'your keySpec'
+           response = Sample.create_key(client, enable_automatic_rotation, rotation_interval, key_usage, origin,
+                                        description, d_kmsinstance_id, protection_level, key_spec)
+           print response
+
+
+   if __name__ == '__main__':
+       Sample.main(sys.argv[1:])
+
+Users who uses Alibaba Cloud SDK to access KMS 1.0 keys need to migrate to access KMS 3.0 keys.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Refer to the following sample code to call the KMS API. For more API examples, see `kms transfer samples <./example/transfer>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+   import os
    from alibabacloud_kms20160120 import models as kms_20160120_models
    from alibabacloud_tea_openapi import models as open_api_models
-   from alibabacloud_tea_util import models as util_models
-
-   from alibabacloud_kms_kms20160120.client import Client
-   from alibabacloud_kms_kms20160120.models import KmsConfig
-
-
-   def get_secret_value_sample():
-       # set config
-       openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-       )
-       # set kms config
-       kms_config = KmsConfig(
-           # set the request protocol to https
-           protocol='https',
-           # set client key file path
-           client_key_file='<your-client-key-file-path>',
-           # set client key password
-           password='<your-password>',
-           # set kms instance endpoint
-           endpoint='<your-kms-instance-endpoint>'
-       )
-
-       # create KMS client, set parameter is_use_kms_share_gateway=True, and forward all interfaces to the KMS shared gateway
-       client = Client(config=openapi_config, kms_config=kms_config, is_use_kms_share_gateway=True)
-
-       request = kms_20160120_models.GetSecretValueRequest(
-           secret_name='<your-secret-name>',
-       )
-
-       # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
-       runtime = util_models.RuntimeOptions(
-           # ignore_ssl=True
-       )
-
-       try:
-           response = client.get_secret_value_with_options(request, runtime)
-           print(response.body)
-       except Exception as e:
-           print(e)
-
-
-   get_secret_value_sample()
-
-- Refer to the following code to transfer the GetSecretValue request to the KMS shared gateway.
-
-.. code:: python
-
-   from alibabacloud_kms20160120 import models as kms_20160120_models
-   from alibabacloud_tea_openapi import models as open_api_models
-   from alibabacloud_tea_util import models as util_models
-
-   from alibabacloud_kms_kms20160120.client import Client
-   from alibabacloud_kms_kms20160120.models import KmsConfig
-
-
-   def get_secret_value_sample():
-       # set config
-       openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-       )
-       # set kms config
-       kms_config = KmsConfig(
-           # set the request protocol to https
-           protocol='https',
-           # set client key file path
-           client_key_file='<your-client-key-file-path>',
-           # set client key password
-           password='<your-password>',
-           # set kms instance endpoint
-           endpoint='<your-kms-instance-endpoint>',
-           # set the specified API interface to forward to KMS shared gateway
-           default_kms_api_names=['GetSecretValue']
-       )
-
-       # create KMS client
-       client = Client(config=openapi_config, kms_config=kms_config)
-
-       request = kms_20160120_models.GetSecretValueRequest(
-           secret_name='<your-secret-name>',
-       )
-
-       # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
-       runtime = util_models.RuntimeOptions(
-           # ignore_ssl=True
-       )
-
-       try:
-           response = client.get_secret_value_with_options(request, runtime)
-           print(response.body)
-       except Exception as e:
-           print(e)
-
-
-   get_secret_value_sample()
-
-- Refer to the following code to transfer a single request to the KMS shared gateway.
-
-.. code:: python
-
-   from alibabacloud_kms20160120 import models as kms_20160120_models
-   from alibabacloud_tea_openapi import models as open_api_models
-
-   from alibabacloud_kms_kms20160120.client import Client
-   from alibabacloud_kms_kms20160120.models import KmsRuntimeOptions, KmsConfig
-
-
-   def get_secret_value_sample():
-       # set config
-       openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-       )
-       # set kms config
-       kms_config = KmsConfig(
-           # set the request protocol to https
-           protocol='https',
-           # set client key file path
-           client_key_file='<your-client-key-file-path>',
-           # set client key password
-           password='<your-password>',
-           # set kms instance endpoint
-           endpoint='<your-kms-instance-endpoint>'
-       )
-
-       # create KMS client
-       client = Client(config=openapi_config, kms_config=kms_config)
-
-       request = kms_20160120_models.GetSecretValueRequest(
-           secret_name='<your-secret-name>',
-       )
-
-       # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
-       runtime = KmsRuntimeOptions(
-           # ignore_ssl=True,
-           # If you set is_use_kms_share_gateway with True,the request must be sent to the shared KMS gateway
-           is_use_kms_share_gateway=True
-       )
-
-       try:
-           response = client.get_secret_value_with_options(request, runtime)
-           print(response.body)
-       except Exception as e:
-           print(e)
-
-
-   get_secret_value_sample()
-
-
-Sample Code (take the Encrypt interface as an example)
--------------------------------------------------------
-You can select reference examples to call KMS services according to different scenarios
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Scenario 1 The new user can refer to the following code to call the service of the KMS instance vpc gateway.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-.. code:: python
-
-   from alibabacloud_kms20160120 import models as kms_20160120_models
-   from alibabacloud_kms_kms20160120.client import Client as KmsClient
    from alibabacloud_kms_kms20160120.models import KmsConfig, KmsRuntimeOptions
+   from alibabacloud_kms_kms20160120.transfer_client import TransferClient
 
 
-   def encrypt_sample():
-       # set config
-       openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-       )
-       # set kms config
-       kms_config = KmsConfig(
-           # set the request protocol to https
-           protocol='https',
-           # set client key file path
-           client_key_file='<your-client-key-file-path>',
-           # set client key password
-           password='<your-password>',
-           # set kms instance endpoint
-           endpoint='<your-kms-instance-endpoint>'
-       )
+   def create_client():
+          # set config
+          openapi_config = open_api_models.Config(
+              # set region id
+              region_id='<your-region-id>',
+              # set access key id
+              access_key_id=os.getenv('ACCESS_KEY_ID'),
+              # set access key secret
+              access_key_secret=os.getenv('ACCESS_KEY_SECRET')
+          )
+          # set kms config
+          kms_config = KmsConfig(
+              # set the request protocol to https
+              protocol='https',
+              # set client key file path
+              client_key_file='<your-client-key-file-path>',
+              # set client key password
+              password='<your-password>',
+              # set kms instance endpoint
+              endpoint='<your-kms-instance-endpoint>'
+          )
+       # create transfer client
+       return TransferClient(config=config, kms_config=kms_config)
 
-       # create KMS client
-       client = KmsClient(config=openapi_config, kms_config=kms_config)
 
-       request = kms_20160120_models.EncryptRequest(
-           # set the CMK ID created on the KMS console
-           key_id='<your-key-id>',
-           # set the plaintext
-           plaintext='<your-plaintext>'
+   def create_key(client):
+       request = kms_20160120_models.CreateKeyRequest(
+           key_spec='<your-key-spec>',
+           key_usage='<your-key-usage>'
        )
 
        # If verify server CA certificate,you can set CA certificate file path with RuntimeOptions
@@ -274,249 +370,54 @@ Scenario 1 The new user can refer to the following code to call the service of t
        # )
 
        try:
-           response = client.encrypt_with_options(request, runtime)
-           print(response.body)
+           response = client.create_key_with_options(request, runtime)
+           print(str(response.body))
        except Exception as e:
-           print(e)
+           print(str(e))
 
 
-   encrypt_sample()
+   def generate_data_key(client):
+       request = kms_20160120_models.GenerateDataKeyRequest(
+           key_id='<your-key-id>',
+       )
 
-Scenario 2 Veteran users can refer to the following sample code of two different scenarios to call KMS services.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-- Solution 1 Before key migration, replace the old SDK (KMS20160120) with the cost SDK, and then use the KMS shared gateway to access KMS services.
-             After the key is migrated, replace the KMS shared gateway with a KMS instance vpc gateway to access KMS services.
-- Solution 2 After key migration, replace the old SDK (KMS20160120) with the cost SDK and use the KMS instance vpc gateway to access KMS services.
+       # If verify server CA certificate,you can set CA certificate file path with RuntimeOptions
+       runtime = KmsRuntimeOptions(
+           ca='<your-ca-certificate-file-path>'
+       )
+       # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
+       # runtime = KmsRuntimeOptions(
+       #    ignore_ssl=True
+       # )
 
-The sample code before key migration is as follows:
-'''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-.. code:: python
-
-    from alibabacloud_kms20160120 import models as kms_20160120_models
-    from alibabacloud_kms_kms20160120.client import Client as KmsClient
-    from alibabacloud_tea_openapi import models as open_api_models
-    from alibabacloud_tea_util import models as util_models
-
-
-    def encrypt_sample():
-        # set config
-        openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-        )
-
-        # create KMS client
-        client = KmsClient(config=openapi_config)
-
-        request = kms_20160120_models.EncryptRequest(
-            # set the CMK ID created on the KMS console
-            key_id='<your-key-id>',
-            # set the plaintext
-            plaintext='<your-plaintext>'
-        )
-
-        # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
-        runtime = util_models.RuntimeOptions(
-            # ignore_ssl=True
-        )
-
-        try:
-            response = client.encrypt_with_options(request, runtime)
-            print(response.body)
-        except Exception as e:
-            print(e)
-
-The sample code after key migration is as follows:
-'''''''''''''''''''''''''''''''''''''''''''''''''''
-
-.. code:: python
-
-    from alibabacloud_kms20160120 import models as kms_20160120_models
-    from alibabacloud_kms_kms20160120.client import Client as KmsClient
-    from alibabacloud_tea_openapi import models as open_api_models
-    from alibabacloud_kms_kms20160120.models import KmsConfig, KmsRuntimeOptions
-
-    def encrypt_sample():
-        # set config
-        openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-        )
-        # set kms config
-        kms_config = KmsConfig(
-           # set the request protocol to https
-           protocol='https',
-           # set client key file path
-           client_key_file='<your-client-key-file-path>',
-           # set client key password
-           password='<your-password>',
-           # set kms instance endpoint
-           endpoint='<your-kms-instance-endpoint>'
-        )
-        # create KMS client
-        client = KmsClient(config=config, kms_config=kms_config)
-
-        request = kms_20160120_models.EncryptRequest(
-            # set the CMK ID created on the KMS console
-            key_id='<your-key-id>',
-            # set the plaintext
-            plaintext='<your-plaintext>'
-        )
-
-        # If verify server CA certificate,you can set CA certificate file path with RuntimeOptions
-        runtime = KmsRuntimeOptions(
-            ca='<your-ca-certificate-file-path>'
-        )
-        # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
-        # runtime = KmsRuntimeOptions(
-        #    ignore_ssl=True
-        # )
-
-        try:
-            response = client.encrypt_with_options(request, runtime)
-            print(response.body)
-        except Exception as e:
-            print(e)
+       try:
+           response = client.generate_data_key_with_options(request, runtime)
+           print(str(response.body))
+       except Exception as e:
+           print(str(e))
 
 
-Character encoding setting instructions (default UTF-8)
---------------------------------------------------------
+   client = create_client()
+   create_key(client)
+   generate_data_key(client)
 
-- You can refer to the following code example to set the global character set encoding.
-
-.. code:: python
-
-    from alibabacloud_kms20160120 import models as kms_20160120_models
-    from alibabacloud_kms_kms20160120.client import Client as KmsClient
-    from alibabacloud_tea_openapi import models as open_api_models
-    from alibabacloud_kms_kms20160120.models import KmsConfig, KmsRuntimeOptions
-
-    def encrypt_sample():
-        # set config
-        openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-        )
-        # set kms config
-        kms_config = KmsConfig(
-           # set the request protocol to https
-           protocol='https',
-           # set client key file path
-           client_key_file='<your-client-key-file-path>',
-           # set client key password
-           password='<your-password>',
-           # set kms instance endpoint
-           endpoint='<your-kms-instance-endpoint>',
-           # set charset encoding to UTF-8
-           encoding='utf-8'
-        )
-
-        # create KMS client
-        client = KmsClient(config=config, kms_config=kms_config)
-
-        request = kms_20160120_models.EncryptRequest(
-            # set the CMK ID created on the KMS console
-            key_id='<your-key-id>',
-            # set the plaintext
-            plaintext='<your-plaintext>'
-        )
-
-        # If verify server CA certificate,you can set CA certificate file path with RuntimeOptions
-        runtime = KmsRuntimeOptions(
-            ca='<your-ca-certificate-file-path>'
-        )
-        # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
-        # runtime = KmsRuntimeOptions(
-        #    ignore_ssl=True
-        # )
-
-        try:
-            response = client.encrypt_with_options(request, runtime)
-            print(response.body)
-        except Exception as e:
-            print(e)
-
-- You can refer to the following code example to set the character set encoding for a single request.
-
-.. code:: python
-
-    from alibabacloud_kms20160120 import models as kms_20160120_models
-    from alibabacloud_kms_kms20160120.client import Client as KmsClient
-    from alibabacloud_tea_openapi import models as open_api_models
-    from alibabacloud_kms_kms20160120.models import KmsConfig, KmsRuntimeOptions
-
-    def encrypt_sample():
-        # set config
-        openapi_config = open_api_models.Config(
-           # set region id
-           region_id='<your-region-id>',
-           # set access key id
-           access_key_id=os.getenv('ACCESS_KEY_ID'),
-           # set access key secret
-           access_key_secret=os.getenv('ACCESS_KEY_SECRET')
-        )
-        # set kms config
-        kms_config = KmsConfig(
-           # set the request protocol to https
-           protocol='https',
-           # set client key file path
-           client_key_file='<your-client-key-file-path>',
-           # set client key password
-           password='<your-password>',
-           # set kms instance endpoint
-           endpoint='<your-kms-instance-endpoint>'
-        )
-
-        # create KMS client
-        client = KmsClient(config=config, kms_config=kms_config)
-
-        request = kms_20160120_models.EncryptRequest(
-            # set the CMK ID created on the KMS console
-            key_id='<your-key-id>',
-            # set the plaintext
-            plaintext='<your-plaintext>'
-        )
-
-        # If verify server CA certificate,you can set CA certificate file path with RuntimeOptions
-        runtime = KmsRuntimeOptions(
-            ca='<your-ca-certificate-file-path>',
-            # set charset encoding to UTF-8
-            encoding='utf-8'
-        )
-        # If you ignore ssl verification，you can set ignore_ssl with True related to the RuntimeOptions parameter
-        # runtime = KmsRuntimeOptions(
-        #    ignore_ssl=True,
-        #    # set charset encoding to UTF-8
-        #    encoding='utf-8'
-        # )
-
-        try:
-            response = client.encrypt_with_options(request, runtime)
-            print(response.body)
-        except Exception as e:
-            print(e)
+::
 
 
-.. _license-1:
+   ## KMS instance performance testing
+
+   If you need to use the KMS instance SDK for KMS instance performance testing, please refer to the sample code of the pressure measurement tools in the directory named benchmarks , compile it into an executable program and run it with the following command:
+
+   ```shell
+   $ python benchmark.py --case=encrypt --client_key_file=./ClientKey_****.json --client_key_password=**** --endpoint=kst-****.cryptoservice.kms.aliyuncs.com --key_id=key-**** --data_size=32 --concurrence_nums=32 --duration=600
+
+How to compile and use the stress test tool, please refer to `the
+document <README-benchmark.rst>`__.
 
 License
---------
+-------
 
-`Apache-2.0 <http://www.apache.org/licenses/LICENSE-2.0>`__
+`Apache License
+2.0 <https://www.apache.org/licenses/LICENSE-2.0.html>`__
 
 Copyright (c) 2009-present, Alibaba Cloud All rights reserved.
-
-.. |image0| image:: https://aliyunsdk-pages.alicdn.com/icons/AlibabaCloud.svg
