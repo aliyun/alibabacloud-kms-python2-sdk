@@ -7,7 +7,7 @@ from requests import codes
 from sdk.models import EncryptRequest
 
 from alibabacloud_kms_kms20160120.handlers.kms_transfer_handler import KmsTransferHandler
-from alibabacloud_kms_kms20160120.utils import consts
+from alibabacloud_kms_kms20160120.utils import consts, encryption_context_utils
 
 
 class EncryptTransferHandler(KmsTransferHandler):
@@ -40,7 +40,7 @@ class EncryptTransferHandler(KmsTransferHandler):
             else:
                 kms_request.plaintext = plaintext
         if request.query.get('EncryptionContext'):
-            kms_request.aad = request.query.get('EncryptionContext')
+            kms_request.aad = encryption_context_utils.sort_and_encode(request.query.get('EncryptionContext'), encoding)
         return kms_request
 
     def call_kms(self, request, runtime_options):

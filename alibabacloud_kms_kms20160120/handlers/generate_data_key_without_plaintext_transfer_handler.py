@@ -8,7 +8,7 @@ from sdk.models import GenerateDataKeyRequest, EncryptRequest
 
 from alibabacloud_kms_kms20160120.handlers.kms_transfer_handler import KmsTransferHandler, INVALID_PARAM_ERROR_CODE, \
     INVALID_PARAMETER_KEY_SPEC_ERROR_MESSAGE
-from alibabacloud_kms_kms20160120.utils import consts
+from alibabacloud_kms_kms20160120.utils import consts, encryption_context_utils
 
 
 class GenerateDataKeyWithoutPlaintextTransferHandler(KmsTransferHandler):
@@ -48,7 +48,7 @@ class GenerateDataKeyWithoutPlaintextTransferHandler(KmsTransferHandler):
         else:
             encoding = self.encoding
         if request.query.get('EncryptionContext'):
-            kms_request.aad = request.query.get('EncryptionContext').encode(encoding)
+            kms_request.aad = encryption_context_utils.sort_and_encode(request.query.get('EncryptionContext'), encoding)
         return kms_request
 
     def call_kms(self, request, runtime_options):
