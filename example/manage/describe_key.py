@@ -42,8 +42,8 @@ class DescribeKey(object):
         open_api_config = DescribeKey.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
         client = DescribeKey.create_client(open_api_config)
         key_id = 'your keyId'
-        response = DescribeKey.describe_key(client, key_id)
-        print response
+        DescribeKey.describe_key(client, key_id)
+        
 
 
 if __name__ == '__main__':

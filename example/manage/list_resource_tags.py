@@ -42,8 +42,8 @@ class ListResourceTags(object):
         open_api_config = ListResourceTags.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
         client = ListResourceTags.create_client(open_api_config)
         key_id = 'your keyId'
-        response = ListResourceTags.list_resource_tags(client, key_id)
-        print response
+        ListResourceTags.list_resource_tags(client, key_id)
+        
 
 
 if __name__ == '__main__':

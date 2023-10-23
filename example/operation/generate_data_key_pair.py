@@ -50,8 +50,8 @@ class GenerateDataKeyPair(object):
         key_id = 'your keyId'
         key_pair_spec = 'your keyPairSpec'
         algorithm = 'your algorithm'
-        response = GenerateDataKeyPair.generate_data_key_pair(client, key_format, aad, key_id, key_pair_spec, algorithm)
-        print response
+        GenerateDataKeyPair.generate_data_key_pair(client, key_format, aad, key_id, key_pair_spec, algorithm)
+        
 
 
 if __name__ == '__main__':

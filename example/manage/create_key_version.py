@@ -42,8 +42,8 @@ class CreateKeyVersion(object):
         open_api_config = CreateKeyVersion.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
         client = CreateKeyVersion.create_client(open_api_config)
         key_id = 'your keyId'
-        response = CreateKeyVersion.create_key_version(client, key_id)
-        print response
+        CreateKeyVersion.create_key_version(client, key_id)
+        
 
 
 if __name__ == '__main__':

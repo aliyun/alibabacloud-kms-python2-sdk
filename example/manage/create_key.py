@@ -56,8 +56,8 @@ class CreateKey(object):
         d_kmsinstance_id = 'your dKMSInstanceId'
         protection_level = 'your protectionLevel'
         key_spec = 'your keySpec'
-        response = CreateKey.create_key(client, enable_automatic_rotation, rotation_interval, key_usage, origin, description, d_kmsinstance_id, protection_level, key_spec)
-        print response
+        CreateKey.create_key(client, enable_automatic_rotation, rotation_interval, key_usage, origin, description, d_kmsinstance_id, protection_level, key_spec)
+        
 
 
 if __name__ == '__main__':

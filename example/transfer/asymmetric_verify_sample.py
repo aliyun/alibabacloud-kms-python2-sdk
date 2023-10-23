@@ -83,11 +83,7 @@ def asymmetric_verify(client):
     #    ignore_ssl=True
     # )
 
-    try:
-        response = client.asymmetric_verify_with_options(request, runtime)
-        print(response.body)
-    except Exception as e:
-        print(e)
+    client.asymmetric_verify_with_options(request, runtime)
 
 
 new_user_asymmetric_verify_sample()

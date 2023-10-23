@@ -49,8 +49,8 @@ class ImportKeyMaterial(object):
         encrypted_key_material = 'your encryptedKeyMaterial'
         key_id = 'your keyId'
         key_material_expire_unix = long(UtilClient.assert_as_string('your keyMaterialExpireUnix'))
-        response = ImportKeyMaterial.import_key_material(client, import_token, encrypted_key_material, key_id, key_material_expire_unix)
-        print response
+        ImportKeyMaterial.import_key_material(client, import_token, encrypted_key_material, key_id, key_material_expire_unix)
+        
 
 
 if __name__ == '__main__':

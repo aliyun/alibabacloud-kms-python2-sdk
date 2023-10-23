@@ -48,8 +48,8 @@ class UpdateSecretVersionStage(object):
         secret_name = 'your secretName'
         move_to_version = 'your moveToVersion'
         version_stage = 'your versionStage'
-        response = UpdateSecretVersionStage.update_secret_version_stage(client, remove_from_version, secret_name, move_to_version, version_stage)
-        print response
+        UpdateSecretVersionStage.update_secret_version_stage(client, remove_from_version, secret_name, move_to_version, version_stage)
+        
 
 
 if __name__ == '__main__':

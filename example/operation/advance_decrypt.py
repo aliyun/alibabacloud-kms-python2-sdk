@@ -52,8 +52,8 @@ class AdvanceDecrypt(object):
         key_id = 'your keyId'
         iv = UtilClient.to_bytes('your iv')
         algorithm = 'your algorithm'
-        response = AdvanceDecrypt.advance_decrypt(client, padding_mode, aad, ciphertext_blob, key_id, iv, algorithm)
-        print response
+        AdvanceDecrypt.advance_decrypt(client, padding_mode, aad, ciphertext_blob, key_id, iv, algorithm)
+        
 
 
 if __name__ == '__main__':

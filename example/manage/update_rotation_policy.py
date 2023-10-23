@@ -46,8 +46,8 @@ class UpdateRotationPolicy(object):
         enable_automatic_rotation = False
         rotation_interval = 'your rotationInterval'
         key_id = 'your keyId'
-        response = UpdateRotationPolicy.update_rotation_policy(client, enable_automatic_rotation, rotation_interval, key_id)
-        print response
+        UpdateRotationPolicy.update_rotation_policy(client, enable_automatic_rotation, rotation_interval, key_id)
+        
 
 
 if __name__ == '__main__':

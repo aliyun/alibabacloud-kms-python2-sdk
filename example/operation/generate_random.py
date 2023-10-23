@@ -42,8 +42,8 @@ class GenerateRandom(object):
         kms_instance_config = GenerateRandom.create_kms_instance_config(os.getenv('your client key file path env'), os.getenv('your client key password env'), 'your kms instance endpoint', 'your ca file path')
         client = GenerateRandom.create_client(kms_instance_config)
         length = int(UtilClient.assert_as_string('your length'))
-        response = GenerateRandom.generate_random(client, length)
-        print response
+        GenerateRandom.generate_random(client, length)
+        
 
 
 if __name__ == '__main__':

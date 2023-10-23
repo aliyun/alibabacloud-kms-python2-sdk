@@ -46,8 +46,8 @@ class DeleteSecret(object):
         secret_name = 'your secretName'
         force_delete_without_recovery = 'your forceDeleteWithoutRecovery'
         recovery_window_in_days = 'your recoveryWindowInDays'
-        response = DeleteSecret.delete_secret(client, secret_name, force_delete_without_recovery, recovery_window_in_days)
-        print response
+        DeleteSecret.delete_secret(client, secret_name, force_delete_without_recovery, recovery_window_in_days)
+        
 
 
 if __name__ == '__main__':

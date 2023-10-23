@@ -42,8 +42,8 @@ class GetPublicKey(object):
         kms_instance_config = GetPublicKey.create_kms_instance_config(os.getenv('your client key file path env'), os.getenv('your client key password env'), 'your kms instance endpoint', 'your ca file path')
         client = GetPublicKey.create_client(kms_instance_config)
         key_id = 'your keyId'
-        response = GetPublicKey.get_public_key(client, key_id)
-        print response
+        GetPublicKey.get_public_key(client, key_id)
+        
 
 
 if __name__ == '__main__':

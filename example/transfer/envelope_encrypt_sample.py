@@ -71,54 +71,50 @@ def after_migrate_envelope_encrypt_sample():
 
 
 def envelope_encrypt(client):
-    try:
-        plaintext = b'<your-plaintext-data>'
-        associated_data = b'<your-associated-data>'
+    plaintext = b'<your-plaintext-data>'
+    associated_data = b'<your-associated-data>'
 
-        # 获取数据密钥，下面以<your-key-id>密钥为例进行说明，数据密钥长度32字节
-        request = kms_20160120_models.GenerateDataKeyRequest(
-            key_id='<your-key-id>',
-            number_of_bytes=32
-        )
+    # 获取数据密钥，下面以<your-key-id>密钥为例进行说明，数据密钥长度32字节
+    request = kms_20160120_models.GenerateDataKeyRequest(
+        key_id='<your-key-id>',
+        number_of_bytes=32
+    )
 
-        # 如果验证服务器证书，可以在RuntimeOptions设置ca证书路径
-        runtime = KmsRuntimeOptions(
-            ca='<your-ca-certificate-file-path>'
-        )
-        # 或者，忽略ssl验证，可以在RuntimeOptions设置ignore_ssl=True
-        # runtime = KmsRuntimeOptions(
-        #    ignore_ssl=True
-        # )
+    # 如果验证服务器证书，可以在RuntimeOptions设置ca证书路径
+    runtime = KmsRuntimeOptions(
+        ca='<your-ca-certificate-file-path>'
+    )
+    # 或者，忽略ssl验证，可以在RuntimeOptions设置ignore_ssl=True
+    # runtime = KmsRuntimeOptions(
+    #    ignore_ssl=True
+    # )
 
-        # 调用生成数据密钥接口
-        response = client.generate_data_key_with_options(request, runtime)
+    # 调用生成数据密钥接口
+    response = client.generate_data_key_with_options(request, runtime)
 
-        # KMS返回的数据密钥明文, 加密本地数据使用
-        data_key = base64.b64decode(response.body.plaintext)
-        data_key_blob = response.body.ciphertext_blob
+    # KMS返回的数据密钥明文, 加密本地数据使用
+    data_key = base64.b64decode(response.body.plaintext)
+    data_key_blob = response.body.ciphertext_blob
 
-        # 计算本地加密初始向量，解密时需要传入
-        gcm_iv_length = 12
-        iv = bytes(''.join(random.sample(string.ascii_letters + string.digits, gcm_iv_length)))
+    # 计算本地加密初始向量，解密时需要传入
+    gcm_iv_length = 12
+    iv = bytes(''.join(random.sample(string.ascii_letters + string.digits, gcm_iv_length)))
 
-        # 本地加密数据，下面是以AES-256 GCM模式为例
-        encryptor = Cipher(algorithms.AES(data_key), modes.GCM(iv)).encryptor()
-        encryptor.authenticate_additional_data(associated_data)
-        ciphertext = encryptor.update(plaintext) + encryptor.finalize()
+    # 本地加密数据，下面是以AES-256 GCM模式为例
+    encryptor = Cipher(algorithms.AES(data_key), modes.GCM(iv)).encryptor()
+    encryptor.authenticate_additional_data(associated_data)
+    ciphertext = encryptor.update(plaintext) + encryptor.finalize()
 
-        # 输出密文，密文输出或持久化由用户根据需要进行处理，下面示例仅展示将密文输出到一个对象的情况
-        # 假如envelope_cipher_text是需要输出的密文对象，至少需要包括以下三个内容:
-        # (1) encrypted_data_key: KMS返回的数据密钥密文
-        # (2) iv: 加密初始向量
-        # (3) cipher_text: 密文数据
-        envelope_cipher_text = EnvelopeCipherPersistObject()
-        envelope_cipher_text.encrypted_data_key = data_key_blob
-        envelope_cipher_text.iv = base64.b64encode(iv)
-        envelope_cipher_text.cipher_text = base64.b64encode(ciphertext)
-        envelope_cipher_text.tag = base64.b64encode(encryptor.tag)
-        print(envelope_cipher_text)
-    except Exception as e:
-        print(e)
+    # 输出密文，密文输出或持久化由用户根据需要进行处理，下面示例仅展示将密文输出到一个对象的情况
+    # 假如envelope_cipher_text是需要输出的密文对象，至少需要包括以下三个内容:
+    # (1) encrypted_data_key: KMS返回的数据密钥密文
+    # (2) iv: 加密初始向量
+    # (3) cipher_text: 密文数据
+    envelope_cipher_text = EnvelopeCipherPersistObject()
+    envelope_cipher_text.encrypted_data_key = data_key_blob
+    envelope_cipher_text.iv = base64.b64encode(iv)
+    envelope_cipher_text.cipher_text = base64.b64encode(ciphertext)
+    envelope_cipher_text.tag = base64.b64encode(encryptor.tag)
 
 
 class EnvelopeCipherPersistObject(object):

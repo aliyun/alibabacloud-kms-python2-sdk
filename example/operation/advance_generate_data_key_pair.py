@@ -48,8 +48,8 @@ class AdvanceGenerateDataKeyPair(object):
         aad = UtilClient.to_bytes('your aad')
         key_id = 'your keyId'
         key_pair_spec = 'your keyPairSpec'
-        response = AdvanceGenerateDataKeyPair.advance_generate_data_key_pair(client, key_format, aad, key_id, key_pair_spec)
-        print response
+        AdvanceGenerateDataKeyPair.advance_generate_data_key_pair(client, key_format, aad, key_id, key_pair_spec)
+        
 
 
 if __name__ == '__main__':

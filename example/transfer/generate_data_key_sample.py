@@ -80,11 +80,7 @@ def generate_data_key(client):
     #    ignore_ssl=True
     # )
 
-    try:
-        response = client.generate_data_key_with_options(request, runtime)
-        print(response.body)
-    except Exception as e:
-        print(e)
+    client.generate_data_key_with_options(request, runtime)
 
 
 new_user_generate_data_key_sample()

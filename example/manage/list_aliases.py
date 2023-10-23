@@ -45,8 +45,8 @@ class ListAliases(object):
         client = ListAliases.create_client(open_api_config)
         page_number = int(UtilClient.assert_as_string('your pageNumber'))
         page_size = int(UtilClient.assert_as_string('your pageSize'))
-        response = ListAliases.list_aliases(client, page_number, page_size)
-        print response
+        ListAliases.list_aliases(client, page_number, page_size)
+        
 
 
 if __name__ == '__main__':

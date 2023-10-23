@@ -47,8 +47,8 @@ class ListKeys(object):
         page_number = int(UtilClient.assert_as_string('your pageNumber'))
         page_size = int(UtilClient.assert_as_string('your pageSize'))
         filters = 'your filters'
-        response = ListKeys.list_keys(client, page_number, page_size, filters)
-        print response
+        ListKeys.list_keys(client, page_number, page_size, filters)
+        
 
 
 if __name__ == '__main__':

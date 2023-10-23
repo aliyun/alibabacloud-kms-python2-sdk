@@ -80,11 +80,7 @@ def get_secret_value(client):
     #    ignore_ssl=True
     # )
 
-    try:
-        response = client.get_secret_value_with_options(request, runtime)
-        print(response.body)
-    except Exception as e:
-        print(e)
+    client.get_secret_value_with_options(request, runtime)
 
 
 new_user_get_secret_value_sample()

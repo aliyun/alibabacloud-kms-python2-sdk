@@ -52,8 +52,8 @@ class Decrypt(object):
         key_id = 'your keyId'
         iv = UtilClient.to_bytes('your iv')
         algorithm = 'your algorithm'
-        response = Decrypt.decrypt(client, padding_mode, aad, ciphertext_blob, key_id, iv, algorithm)
-        print response
+        Decrypt.decrypt(client, padding_mode, aad, ciphertext_blob, key_id, iv, algorithm)
+        
 
 
 if __name__ == '__main__':

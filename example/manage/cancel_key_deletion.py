@@ -42,8 +42,8 @@ class CancelKeyDeletion(object):
         open_api_config = CancelKeyDeletion.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
         client = CancelKeyDeletion.create_client(open_api_config)
         key_id = 'your keyId'
-        response = CancelKeyDeletion.cancel_key_deletion(client, key_id)
-        print response
+        CancelKeyDeletion.cancel_key_deletion(client, key_id)
+        
 
 
 if __name__ == '__main__':

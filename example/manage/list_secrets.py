@@ -49,8 +49,8 @@ class ListSecrets(object):
         page_size = int(UtilClient.assert_as_string('your pageSize'))
         filters = 'your filters'
         fetch_tags = 'your fetchTags'
-        response = ListSecrets.list_secrets(client, page_number, page_size, filters, fetch_tags)
-        print response
+        ListSecrets.list_secrets(client, page_number, page_size, filters, fetch_tags)
+        
 
 
 if __name__ == '__main__':

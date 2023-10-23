@@ -42,8 +42,8 @@ class DeleteAlias(object):
         open_api_config = DeleteAlias.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
         client = DeleteAlias.create_client(open_api_config)
         alias_name = 'your aliasName'
-        response = DeleteAlias.delete_alias(client, alias_name)
-        print response
+        DeleteAlias.delete_alias(client, alias_name)
+        
 
 
 if __name__ == '__main__':

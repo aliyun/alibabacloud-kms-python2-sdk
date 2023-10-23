@@ -44,8 +44,8 @@ class DescribeSecret(object):
         client = DescribeSecret.create_client(open_api_config)
         secret_name = 'your secretName'
         fetch_tags = 'your fetchTags'
-        response = DescribeSecret.describe_secret(client, secret_name, fetch_tags)
-        print response
+        DescribeSecret.describe_secret(client, secret_name, fetch_tags)
+        
 
 
 if __name__ == '__main__':

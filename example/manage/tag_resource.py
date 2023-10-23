@@ -48,8 +48,8 @@ class TagResource(object):
         certificate_id = 'your certificateId'
         key_id = 'your keyId'
         tags = 'your tags'
-        response = TagResource.tag_resource(client, secret_name, certificate_id, key_id, tags)
-        print response
+        TagResource.tag_resource(client, secret_name, certificate_id, key_id, tags)
+        
 
 
 if __name__ == '__main__':

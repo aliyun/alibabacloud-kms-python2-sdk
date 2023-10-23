@@ -48,8 +48,8 @@ class GetSecretValue(object):
         secret_name = 'your secretName'
         version_id = 'your versionId'
         version_stage = 'your versionStage'
-        response = GetSecretValue.get_secret_value(client, fetch_extended_config, secret_name, version_id, version_stage)
-        print response
+        GetSecretValue.get_secret_value(client, fetch_extended_config, secret_name, version_id, version_stage)
+        
 
 
 if __name__ == '__main__':

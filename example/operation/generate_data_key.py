@@ -48,8 +48,8 @@ class GenerateDataKey(object):
         key_id = 'your keyId'
         number_of_bytes = int(UtilClient.assert_as_string('your numberOfBytes'))
         algorithm = 'your algorithm'
-        response = GenerateDataKey.generate_data_key(client, aad, key_id, number_of_bytes, algorithm)
-        print response
+        GenerateDataKey.generate_data_key(client, aad, key_id, number_of_bytes, algorithm)
+        
 
 
 if __name__ == '__main__':

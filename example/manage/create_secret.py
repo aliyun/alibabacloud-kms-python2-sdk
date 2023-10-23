@@ -62,8 +62,8 @@ class CreateSecret(object):
         d_kmsinstance_id = 'your dKMSInstanceId'
         secret_data = 'your secretData'
         tags = 'your tags'
-        response = CreateSecret.create_secret(client, enable_automatic_rotation, rotation_interval, encryption_key_id, secret_name, version_id, secret_data_type, secret_type, description, d_kmsinstance_id, secret_data, tags)
-        print response
+        CreateSecret.create_secret(client, enable_automatic_rotation, rotation_interval, encryption_key_id, secret_name, version_id, secret_data_type, secret_type, description, d_kmsinstance_id, secret_data, tags)
+        
 
 
 if __name__ == '__main__':

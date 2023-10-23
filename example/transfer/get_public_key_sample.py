@@ -80,11 +80,7 @@ def get_public_key(client):
     #    ignore_ssl=True
     # )
 
-    try:
-        response = client.get_public_key_with_options(request, runtime)
-        print(response.body)
-    except Exception as e:
-        print(e)
+    client.get_public_key_with_options(request, runtime)
 
 
 new_user_get_public_key_sample()
