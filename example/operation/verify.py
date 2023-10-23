@@ -50,8 +50,8 @@ class Verify(object):
         key_id = 'your keyId'
         message = UtilClient.to_bytes('your message')
         algorithm = 'your algorithm'
-        response = Verify.verify(client, message_type, signature, key_id, message, algorithm)
-        print response
+        Verify.verify(client, message_type, signature, key_id, message, algorithm)
+        
 
 
 if __name__ == '__main__':

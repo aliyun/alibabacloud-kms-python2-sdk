@@ -44,8 +44,8 @@ class UpdateSecret(object):
         client = UpdateSecret.create_client(open_api_config)
         secret_name = 'your secretName'
         description = 'your description'
-        response = UpdateSecret.update_secret(client, secret_name, description)
-        print response
+        UpdateSecret.update_secret(client, secret_name, description)
+        
 
 
 if __name__ == '__main__':

@@ -50,8 +50,8 @@ class GenerateDataKeyPairWithoutPlaintext(object):
         key_id = 'your keyId'
         key_pair_spec = 'your keyPairSpec'
         algorithm = 'your algorithm'
-        response = GenerateDataKeyPairWithoutPlaintext.generate_data_key_pair_without_plaintext(client, key_format, aad, key_id, key_pair_spec, algorithm)
-        print response
+        GenerateDataKeyPairWithoutPlaintext.generate_data_key_pair_without_plaintext(client, key_format, aad, key_id, key_pair_spec, algorithm)
+        
 
 
 if __name__ == '__main__':

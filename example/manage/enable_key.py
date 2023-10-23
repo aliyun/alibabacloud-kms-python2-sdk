@@ -42,8 +42,8 @@ class EnableKey(object):
         open_api_config = EnableKey.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
         client = EnableKey.create_client(open_api_config)
         key_id = 'your keyId'
-        response = EnableKey.enable_key(client, key_id)
-        print response
+        EnableKey.enable_key(client, key_id)
+        
 
 
 if __name__ == '__main__':

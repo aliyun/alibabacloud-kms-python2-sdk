@@ -50,8 +50,8 @@ class PutSecretValue(object):
         secret_data_type = 'your secretDataType'
         version_stages = 'your versionStages'
         secret_data = 'your secretData'
-        response = PutSecretValue.put_secret_value(client, secret_name, version_id, secret_data_type, version_stages, secret_data)
-        print response
+        PutSecretValue.put_secret_value(client, secret_name, version_id, secret_data_type, version_stages, secret_data)
+        
 
 
 if __name__ == '__main__':

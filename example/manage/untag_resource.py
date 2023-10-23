@@ -48,8 +48,8 @@ class UntagResource(object):
         tag_keys = 'your tagKeys'
         certificate_id = 'your certificateId'
         key_id = 'your keyId'
-        response = UntagResource.untag_resource(client, secret_name, tag_keys, certificate_id, key_id)
-        print response
+        UntagResource.untag_resource(client, secret_name, tag_keys, certificate_id, key_id)
+        
 
 
 if __name__ == '__main__':

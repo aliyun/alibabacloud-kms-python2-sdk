@@ -82,11 +82,7 @@ def asymmetric_decrypt(client):
     #    ignore_ssl=True
     # )
 
-    try:
-        response = client.asymmetric_decrypt_with_options(request, runtime)
-        print(response.body)
-    except Exception as e:
-        print(e)
+    client.asymmetric_decrypt_with_options(request, runtime)
 
 
 new_user_asymmetric_decrypt_sample()

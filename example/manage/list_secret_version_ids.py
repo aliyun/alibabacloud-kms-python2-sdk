@@ -49,8 +49,8 @@ class ListSecretVersionIds(object):
         secret_name = 'your secretName'
         page_number = int(UtilClient.assert_as_string('your pageNumber'))
         page_size = int(UtilClient.assert_as_string('your pageSize'))
-        response = ListSecretVersionIds.list_secret_version_ids(client, include_deprecated, secret_name, page_number, page_size)
-        print response
+        ListSecretVersionIds.list_secret_version_ids(client, include_deprecated, secret_name, page_number, page_size)
+        
 
 
 if __name__ == '__main__':

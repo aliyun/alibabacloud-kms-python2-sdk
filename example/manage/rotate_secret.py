@@ -44,8 +44,8 @@ class RotateSecret(object):
         client = RotateSecret.create_client(open_api_config)
         secret_name = 'your secretName'
         version_id = 'your versionId'
-        response = RotateSecret.rotate_secret(client, secret_name, version_id)
-        print response
+        RotateSecret.rotate_secret(client, secret_name, version_id)
+        
 
 
 if __name__ == '__main__':

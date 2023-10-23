@@ -46,8 +46,8 @@ class SetDeletionProtection(object):
         protected_resource_arn = 'your protectedResourceArn'
         enable_deletion_protection = False
         deletion_protection_description = 'your deletionProtectionDescription'
-        response = SetDeletionProtection.set_deletion_protection(client, protected_resource_arn, enable_deletion_protection, deletion_protection_description)
-        print response
+        SetDeletionProtection.set_deletion_protection(client, protected_resource_arn, enable_deletion_protection, deletion_protection_description)
+        
 
 
 if __name__ == '__main__':

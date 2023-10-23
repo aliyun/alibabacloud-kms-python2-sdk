@@ -54,8 +54,8 @@ class GetRandomPassword(object):
         exclude_uppercase = 'your excludeUppercase'
         password_length = 'your passwordLength'
         require_each_included_type = 'your requireEachIncludedType'
-        response = GetRandomPassword.get_random_password(client, exclude_punctuation, exclude_numbers, exclude_characters, exclude_lowercase, exclude_uppercase, password_length, require_each_included_type)
-        print response
+        GetRandomPassword.get_random_password(client, exclude_punctuation, exclude_numbers, exclude_characters, exclude_lowercase, exclude_uppercase, password_length, require_each_included_type)
+        
 
 
 if __name__ == '__main__':

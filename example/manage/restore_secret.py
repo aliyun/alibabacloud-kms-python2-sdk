@@ -42,8 +42,8 @@ class RestoreSecret(object):
         open_api_config = RestoreSecret.create_open_api_config(os.getenv('ALIBABA_CLOUD_ACCESS_KEY_ID'), os.getenv('ALIBABA_CLOUD_ACCESS_KEY_SECRET'), 'your region id')
         client = RestoreSecret.create_client(open_api_config)
         secret_name = 'your secretName'
-        response = RestoreSecret.restore_secret(client, secret_name)
-        print response
+        RestoreSecret.restore_secret(client, secret_name)
+        
 
 
 if __name__ == '__main__':

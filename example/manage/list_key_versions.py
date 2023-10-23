@@ -47,8 +47,8 @@ class ListKeyVersions(object):
         page_number = int(UtilClient.assert_as_string('your pageNumber'))
         key_id = 'your keyId'
         page_size = int(UtilClient.assert_as_string('your pageSize'))
-        response = ListKeyVersions.list_key_versions(client, page_number, key_id, page_size)
-        print response
+        ListKeyVersions.list_key_versions(client, page_number, key_id, page_size)
+        
 
 
 if __name__ == '__main__':
