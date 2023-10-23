@@ -80,11 +80,7 @@ def decrypt(client):
     #    ignore_ssl=True
     # )
 
-    try:
-        response = client.decrypt_with_options(request, runtime)
-        print(response.body)
-    except Exception as e:
-        print(e)
+    client.decrypt_with_options(request, runtime)
 
 
 new_user_decrypt_sample()

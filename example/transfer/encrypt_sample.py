@@ -81,11 +81,7 @@ def encrypt(client):
     #    ignore_ssl=True
     # )
 
-    try:
-        response = client.encrypt_with_options(request, runtime)
-        print(response.body)
-    except Exception as e:
-        print(e)
+    client.encrypt_with_options(request, runtime)
 
 
 new_user_encrypt_sample()

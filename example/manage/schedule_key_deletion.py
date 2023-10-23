@@ -45,8 +45,8 @@ class ScheduleKeyDeletion(object):
         client = ScheduleKeyDeletion.create_client(open_api_config)
         pending_window_in_days = int(UtilClient.assert_as_string('your pendingWindowInDays'))
         key_id = 'your keyId'
-        response = ScheduleKeyDeletion.schedule_key_deletion(client, pending_window_in_days, key_id)
-        print response
+        ScheduleKeyDeletion.schedule_key_deletion(client, pending_window_in_days, key_id)
+        
 
 
 if __name__ == '__main__':

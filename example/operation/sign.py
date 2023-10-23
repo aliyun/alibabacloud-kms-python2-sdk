@@ -48,8 +48,8 @@ class Sign(object):
         key_id = 'your keyId'
         message = UtilClient.to_bytes('your message')
         algorithm = 'your algorithm'
-        response = Sign.sign(client, message_type, key_id, message, algorithm)
-        print response
+        Sign.sign(client, message_type, key_id, message, algorithm)
+        
 
 
 if __name__ == '__main__':

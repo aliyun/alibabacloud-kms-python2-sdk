@@ -44,8 +44,8 @@ class UpdateKeyDescription(object):
         client = UpdateKeyDescription.create_client(open_api_config)
         description = 'your description'
         key_id = 'your keyId'
-        response = UpdateKeyDescription.update_key_description(client, description, key_id)
-        print response
+        UpdateKeyDescription.update_key_description(client, description, key_id)
+        
 
 
 if __name__ == '__main__':

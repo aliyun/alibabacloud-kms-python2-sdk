@@ -44,8 +44,8 @@ class UpdateAlias(object):
         client = UpdateAlias.create_client(open_api_config)
         alias_name = 'your aliasName'
         key_id = 'your keyId'
-        response = UpdateAlias.update_alias(client, alias_name, key_id)
-        print response
+        UpdateAlias.update_alias(client, alias_name, key_id)
+        
 
 
 if __name__ == '__main__':

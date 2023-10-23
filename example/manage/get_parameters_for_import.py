@@ -46,8 +46,8 @@ class GetParametersForImport(object):
         wrapping_key_spec = 'your wrappingKeySpec'
         key_id = 'your keyId'
         wrapping_algorithm = 'your wrappingAlgorithm'
-        response = GetParametersForImport.get_parameters_for_import(client, wrapping_key_spec, key_id, wrapping_algorithm)
-        print response
+        GetParametersForImport.get_parameters_for_import(client, wrapping_key_spec, key_id, wrapping_algorithm)
+        
 
 
 if __name__ == '__main__':

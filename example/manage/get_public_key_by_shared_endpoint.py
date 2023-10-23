@@ -44,8 +44,8 @@ class GetPublicKeyBySharedEndpoint(object):
         client = GetPublicKeyBySharedEndpoint.create_client(open_api_config)
         key_version_id = 'your keyVersionId'
         key_id = 'your keyId'
-        response = GetPublicKeyBySharedEndpoint.get_public_key_by_shared_endpoint(client, key_version_id, key_id)
-        print response
+        GetPublicKeyBySharedEndpoint.get_public_key_by_shared_endpoint(client, key_version_id, key_id)
+        
 
 
 if __name__ == '__main__':

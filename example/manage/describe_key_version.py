@@ -44,8 +44,8 @@ class DescribeKeyVersion(object):
         client = DescribeKeyVersion.create_client(open_api_config)
         key_version_id = 'your keyVersionId'
         key_id = 'your keyId'
-        response = DescribeKeyVersion.describe_key_version(client, key_version_id, key_id)
-        print response
+        DescribeKeyVersion.describe_key_version(client, key_version_id, key_id)
+        
 
 
 if __name__ == '__main__':

@@ -52,8 +52,8 @@ class Encrypt(object):
         plaintext = UtilClient.to_bytes('your plaintext')
         iv = UtilClient.to_bytes('your iv')
         algorithm = 'your algorithm'
-        response = Encrypt.encrypt(client, padding_mode, aad, key_id, plaintext, iv, algorithm)
-        print response
+        Encrypt.encrypt(client, padding_mode, aad, key_id, plaintext, iv, algorithm)
+        
 
 
 if __name__ == '__main__':

@@ -46,8 +46,8 @@ class AdvanceGenerateDataKey(object):
         aad = UtilClient.to_bytes('your aad')
         key_id = 'your keyId'
         number_of_bytes = int(UtilClient.assert_as_string('your numberOfBytes'))
-        response = AdvanceGenerateDataKey.advance_generate_data_key(client, aad, key_id, number_of_bytes)
-        print response
+        AdvanceGenerateDataKey.advance_generate_data_key(client, aad, key_id, number_of_bytes)
+        
 
 
 if __name__ == '__main__':

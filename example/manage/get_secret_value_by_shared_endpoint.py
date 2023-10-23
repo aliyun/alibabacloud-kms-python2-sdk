@@ -48,8 +48,8 @@ class GetSecretValueBySharedEndpoint(object):
         secret_name = 'your secretName'
         version_id = 'your versionId'
         version_stage = 'your versionStage'
-        response = GetSecretValueBySharedEndpoint.get_secret_value_by_shared_endpoint(client, fetch_extended_config, secret_name, version_id, version_stage)
-        print response
+        GetSecretValueBySharedEndpoint.get_secret_value_by_shared_endpoint(client, fetch_extended_config, secret_name, version_id, version_stage)
+        
 
 
 if __name__ == '__main__':

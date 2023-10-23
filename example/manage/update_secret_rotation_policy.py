@@ -46,8 +46,8 @@ class UpdateSecretRotationPolicy(object):
         enable_automatic_rotation = False
         rotation_interval = 'your rotationInterval'
         secret_name = 'your secretName'
-        response = UpdateSecretRotationPolicy.update_secret_rotation_policy(client, enable_automatic_rotation, rotation_interval, secret_name)
-        print response
+        UpdateSecretRotationPolicy.update_secret_rotation_policy(client, enable_automatic_rotation, rotation_interval, secret_name)
+        
 
 
 if __name__ == '__main__':
