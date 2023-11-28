@@ -23,6 +23,7 @@ from alibabacloud_kms_kms20160120.handlers.generate_data_key_without_plaintext_t
 from alibabacloud_kms_kms20160120.handlers.get_public_key_transfer_handler import GetPublicKeyTransferHandler
 from alibabacloud_kms_kms20160120.handlers.get_secret_value_transfer_handler import GetSecretValueTransferHandler
 from alibabacloud_kms_kms20160120.models import KmsRuntimeOptions, KmsConfig
+from alibabacloud_kms_kms20160120.utils import consts
 from alibabacloud_kms_kms20160120.utils.consts import *
 
 
@@ -40,6 +41,8 @@ class TransferClient(OpenApiClient):
             super(TransferClient, self).__init__(config)
             if isinstance(kms_config, KmsConfig):
                 self.kms_config = kms_config
+            if kms_config.user_agent is None:
+                kms_config.user_agent = consts.TRANSFER_CLIENT_USER_AGENT
             self.client = DKmsClient(kms_config)
             self.is_use_kms_share_gateway = is_use_kms_share_gateway
             self.init_kms_transfer_handlers()
@@ -50,6 +53,8 @@ class TransferClient(OpenApiClient):
             super(TransferClient, self).__init__(openapi_models.Config(endpoint=kms_config.endpoint))
             if isinstance(kms_config, KmsConfig):
                 self.kms_config = kms_config
+            if kms_config.user_agent is None:
+                kms_config.user_agent = consts.TRANSFER_CLIENT_USER_AGENT
             self.client = DKmsClient(kms_config)
             self.is_use_kms_share_gateway = False
             self.init_kms_transfer_handlers()
