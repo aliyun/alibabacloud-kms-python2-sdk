@@ -8,6 +8,8 @@ from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_openapi_util.client import Client as OpenApiUtilClient
 from openapi.models import Config
 
+from alibabacloud_kms_kms20160120.utils import consts
+
 
 class Client(DedicatedKmsSdkClient):
     _kms_client = None  # type: Kms20160120Client
@@ -17,6 +19,8 @@ class Client(DedicatedKmsSdkClient):
             kms_instance_config = Config(endpoint="mock endpoint")
         if open_api_config is None:
             open_api_config = open_api_models.Config(region_id="mock region_id")
+        if kms_instance_config.user_agent is None:
+            kms_instance_config.user_agent = consts.CLIENT_USER_AGENT
         super(Client, self).__init__(kms_instance_config)
         self._kms_client = Kms20160120Client(open_api_config)
 
