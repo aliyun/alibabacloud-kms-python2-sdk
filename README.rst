@@ -66,8 +66,8 @@ Sample code
 1. Scenarios where key operations are performed only through VPC gateways.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Refer to the following sample code to call the KMS Encrypt API. For more API examples, see\ `operation samples <./example/operation>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Refer to the following sample code to call the KMS AdvanceEncrypt API. For more API examples, see\ `operation samples <./example/operation>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -85,7 +85,7 @@ Refer to the following sample code to call the KMS Encrypt API. For more API exa
 
    import os
 
-   class Encrypt(object):
+   class AdvanceEncrypt(object):
        def __init__(self):
            pass
 
@@ -104,33 +104,25 @@ Refer to the following sample code to call the KMS Encrypt API. For more API exa
            return KmsSdkClient(kms_instance_config=kms_instance_config)
 
        @staticmethod
-       def encrypt(client, padding_mode, aad, key_id, plaintext, iv, algorithm):
-           request = dedicated_kms_sdk_models.EncryptRequest(
-               padding_mode=padding_mode,
-               aad=aad,
+       def advance_encrypt(client, key_id, plaintext):
+           request = dedicated_kms_sdk_models.AdvanceEncryptRequest(
                key_id=key_id,
-               plaintext=plaintext,
-               iv=iv,
-               algorithm=algorithm
+               plaintext=plaintext
            )
-           return client.encrypt(request)
+           return client.advance_encrypt(request)
 
        @staticmethod
        def main(args):
-           kms_instance_config = Encrypt.create_kms_instance_config(os.getenv('your client key file path env'), os.getenv('your client key password env'), 'your kms instance endpoint', 'your ca file path')
-           client = Encrypt.create_client(kms_instance_config)
-           padding_mode = 'your paddingMode'
-           aad = UtilClient.to_bytes('your aad')
+           kms_instance_config = AdvanceEncrypt.create_kms_instance_config(os.getenv('your client key file path env'), os.getenv('your client key password env'), 'your kms instance endpoint', 'your ca file path')
+           client = AdvanceEncrypt.create_client(kms_instance_config)
            key_id = 'your keyId'
            plaintext = UtilClient.to_bytes('your plaintext')
-           iv = UtilClient.to_bytes('your iv')
-           algorithm = 'your algorithm'
-           response = Encrypt.encrypt(client, padding_mode, aad, key_id, plaintext, iv, algorithm)
+           response = AdvanceEncrypt.advance_encrypt(client, key_id, plaintext)
            print response
 
 
    if __name__ == '__main__':
-       Encrypt.main(sys.argv[1:])
+       AdvanceEncrypt.main(sys.argv[1:])
 
 2. KMS resources are managed only through public gateways.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -208,8 +200,8 @@ Refer to the following sample code to call the KMS CreateKey API. For more API e
 3. You must not only perform key operations through a VPC gateway, but also manage KMS resources through a public gateway.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Refer to the following sample code to call the KMS CreateKey API and the Encrypt API. For more API examples, see `operation samples <./example/operation>`__ 和 `manage samples <./example/manage>`__
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Refer to the following sample code to call the KMS CreateKey API and the AdvanceEncrypt API. For more API examples, see `operation samples <./example/operation>`__ 和 `manage samples <./example/manage>`__
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code:: python
 
@@ -255,14 +247,12 @@ Refer to the following sample code to call the KMS CreateKey API and the Encrypt
            return KmsSdkClient(kms_instance_config=kms_instance_config, open_api_config=open_api_config)
 
        @staticmethod
-       def generate_data_key(client, aad, key_id, number_of_bytes, algorithm):
-           request = dedicated_kms_sdk_models.GenerateDataKeyRequest(
-               aad=aad,
+       def advance_encrypt(client, key_id, plaintext):
+           request = dedicated_kms_sdk_models.AdvanceEncryptRequest(
                key_id=key_id,
-               number_of_bytes=number_of_bytes,
-               algorithm=algorithm
+               plaintext=plaintext
            )
-           return client.generate_data_key(request)
+           return client.advance_encrypt(request)
 
        @staticmethod
        def create_key(client, enable_automatic_rotation, rotation_interval, key_usage, origin, description,
@@ -290,11 +280,9 @@ Refer to the following sample code to call the KMS CreateKey API and the Encrypt
                                                                    'your kms instance endpoint', 'your ca file path')
            client = Sample.create_client(kms_instance_config=kms_instance_config, open_api_config=open_api_config)
 
-           aad = UtilClient.to_bytes('your aad')
            key_id = 'your keyId'
-           number_of_bytes = int(UtilClient.assert_as_string('your numberOfBytes'))
-           algorithm = 'your algorithm'
-           response = Sample.generate_data_key(client, aad, key_id, number_of_bytes, algorithm)
+           plaintext = UtilClient.to_bytes('your plaintext')
+           response = Sample.advance_encrypt(client, key_id, plaintext)
            print response
 
            enable_automatic_rotation = False
